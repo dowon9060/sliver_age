@@ -16,7 +16,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.silverage.app"
+      "bundleIdentifier": "com.silverage.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "주변 모임을 찾기 위해 위치 정보가 필요합니다.",
+        "NSLocationAlwaysUsageDescription": "백그라운드에서 근처 모임 알림을 받기 위해 위치 정보가 필요합니다."
+      },
+      "config": {
+        "googleMapsApiKey": "YOUR_GOOGLE_MAPS_IOS_API_KEY"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -30,7 +37,12 @@
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
-      ]
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "YOUR_GOOGLE_MAPS_ANDROID_API_KEY"
+        }
+      }
     }
   }
 }

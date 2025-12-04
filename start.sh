@@ -105,3 +105,4 @@ echo "   - AWS S3 자격증명"
 echo ""
 echo -e "${GREEN}자세한 내용은 SETUP_GUIDE.md를 참고하세요!${NC}"
 
+

@@ -355,3 +355,4 @@ Body:
 - `404 Not Found`: 리소스를 찾을 수 없음
 - `500 Internal Server Error`: 서버 오류
 
+
