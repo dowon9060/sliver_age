@@ -63,11 +63,26 @@ export default function HomeScreen({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#2563EB" />
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>실버세대</Text>
-        <Text style={styles.headerSubtitle}>함께 만드는 행복한 노후</Text>
+        <View style={styles.profileSection}>
+          <View style={styles.profileInfo}>
+            <Text style={styles.nickname}>김건강님</Text>
+            <View style={styles.statsRow}>
+              <View style={styles.statBadge}>
+                <Text style={styles.statLabel}>Lv.12</Text>
+              </View>
+              <View style={styles.statBadge}>
+                <Text style={styles.heartIcon}>❤️</Text>
+                <Text style={styles.statLabel}>95%</Text>
+              </View>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.profileAvatar}>
+            <Text style={styles.avatarText}>김</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView 
@@ -95,26 +110,133 @@ export default function HomeScreen({ navigation }: any) {
         </ScrollView>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>최근 활동</Text>
-          <View style={styles.activityCard}>
-            <Text style={styles.activityTitle}>아침 산책 모임 참여</Text>
-            <Text style={styles.activityTime}>2시간 전</Text>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>추천 모임</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAll}>전체보기</Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.activityCard}>
-            <Text style={styles.activityTitle}>커뮤니티 게시글 작성</Text>
-            <Text style={styles.activityTime}>1일 전</Text>
-          </View>
+          <ScrollView 
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.recommendContainer}
+          >
+            <TouchableOpacity style={styles.recommendCard}>
+              <View style={styles.cardImage}>
+                <View style={styles.imagePlaceholder}>
+                  <Text style={styles.imagePlaceholderText}>🎨</Text>
+                </View>
+                <View style={styles.categoryBadge}>
+                  <Text style={styles.categoryBadgeText}>취미</Text>
+                </View>
+              </View>
+              <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}>수채화 그리기 교실</Text>
+                <Text style={styles.cardLocation}>종로 문화센터</Text>
+                <View style={styles.cardFooter}>
+                  <Text style={styles.cardParticipants}>9명 참여중</Text>
+                  <Text style={styles.cardDistance}>0.8km</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.recommendCard}>
+              <View style={styles.cardImage}>
+                <View style={styles.imagePlaceholder}>
+                  <Text style={styles.imagePlaceholderText}>📚</Text>
+                </View>
+                <View style={styles.categoryBadge}>
+                  <Text style={styles.categoryBadgeText}>독서</Text>
+                </View>
+              </View>
+              <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}>카페에서 책 읽기</Text>
+                <Text style={styles.cardLocation}>익선동 북카페</Text>
+                <View style={styles.cardFooter}>
+                  <Text style={styles.cardParticipants}>4명 참여중</Text>
+                  <Text style={styles.cardDistance}>1.2km</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.recommendCard}>
+              <View style={styles.cardImage}>
+                <View style={styles.imagePlaceholder}>
+                  <Text style={styles.imagePlaceholderText}>🧘</Text>
+                </View>
+                <View style={styles.categoryBadge}>
+                  <Text style={styles.categoryBadgeText}>운동</Text>
+                </View>
+              </View>
+              <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}>아침 요가 클래스</Text>
+                <Text style={styles.cardLocation}>남산 공원</Text>
+                <View style={styles.cardFooter}>
+                  <Text style={styles.cardParticipants}>7명 참여중</Text>
+                  <Text style={styles.cardDistance}>0.5km</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>추천 모임</Text>
-          <View style={styles.recommendCard}>
-            <Text style={styles.recommendTitle}>수채화 그리기 교실</Text>
-            <Text style={styles.recommendInfo}>종로 문화센터 • 9명 참여중</Text>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>인기 공동구매</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAll}>전체보기</Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.recommendCard}>
-            <Text style={styles.recommendTitle}>카페에서 책 읽기</Text>
-            <Text style={styles.recommendInfo}>익선동 북카페 • 4명 참여중</Text>
+          <View style={styles.dealCard}>
+            <View style={styles.dealImageContainer}>
+              <View style={styles.dealImagePlaceholder}>
+                <Text style={styles.dealImageText}>🍎</Text>
+              </View>
+              <View style={styles.dealBadge}>
+                <Text style={styles.dealBadgeText}>마감임박</Text>
+              </View>
+            </View>
+            <View style={styles.dealContent}>
+              <Text style={styles.dealTitle}>국내산 사과 5kg</Text>
+              <View style={styles.dealPriceRow}>
+                <Text style={styles.dealDiscount}>45%</Text>
+                <Text style={styles.dealPrice}>15,900원</Text>
+                <Text style={styles.dealOriginal}>29,000원</Text>
+              </View>
+              <View style={styles.dealProgress}>
+                <View style={[styles.dealProgressBar, { width: '75%' }]} />
+              </View>
+              <View style={styles.dealFooter}>
+                <Text style={styles.dealParticipants}>15/20명 참여</Text>
+                <Text style={styles.dealTime}>2시간 남음</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.dealCard}>
+            <View style={styles.dealImageContainer}>
+              <View style={styles.dealImagePlaceholder}>
+                <Text style={styles.dealImageText}>🥬</Text>
+              </View>
+              <View style={styles.dealBadge}>
+                <Text style={styles.dealBadgeText}>HOT</Text>
+              </View>
+            </View>
+            <View style={styles.dealContent}>
+              <Text style={styles.dealTitle}>유기농 채소 박스</Text>
+              <View style={styles.dealPriceRow}>
+                <Text style={styles.dealDiscount}>30%</Text>
+                <Text style={styles.dealPrice}>24,500원</Text>
+                <Text style={styles.dealOriginal}>35,000원</Text>
+              </View>
+              <View style={styles.dealProgress}>
+                <View style={[styles.dealProgressBar, { width: '55%' }]} />
+              </View>
+              <View style={styles.dealFooter}>
+                <Text style={styles.dealParticipants}>11/20명 참여</Text>
+                <Text style={styles.dealTime}>5시간 남음</Text>
+              </View>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -128,30 +250,73 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8FAFC',
   },
   header: {
-    backgroundColor: '#2563EB',
+    backgroundColor: '#FFFFFF',
     paddingTop: 50,
-    paddingBottom: 24,
+    paddingBottom: 16,
     paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
   },
-  headerTitle: {
-    fontSize: 28,
+  profileSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  profileInfo: {
+    flex: 1,
+  },
+  nickname: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#111827',
+    marginBottom: 6,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  statBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F3F4F6',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    gap: 4,
+  },
+  statLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#374151',
+  },
+  heartIcon: {
+    fontSize: 12,
+  },
+  profileAvatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#2563EB',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarText: {
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#FFFFFF',
-    marginBottom: 4,
-  },
-  headerSubtitle: {
-    fontSize: 14,
-    color: '#DBEAFE',
   },
   content: {
     flex: 1,
   },
   menuContainer: {
-    paddingVertical: 20,
+    paddingVertical: 24,
+    backgroundColor: '#FFFFFF',
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
   },
   menuContentContainer: {
-    paddingHorizontal: 16,
-    gap: 16,
+    paddingHorizontal: 20,
+    gap: 20,
   },
   menuItem: {
     alignItems: 'center',
@@ -181,51 +346,199 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   section: {
-    paddingHorizontal: 16,
-    marginTop: 8,
-    marginBottom: 24,
+    marginTop: 32,
+    marginBottom: 16,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+    paddingHorizontal: 20,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '800',
     color: '#111827',
+  },
+  seeAll: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#2563EB',
+  },
+  recommendContainer: {
+    paddingHorizontal: 20,
+    gap: 16,
+  },
+  recommendCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    width: 280,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 4,
+  },
+  cardImage: {
+    width: '100%',
+    height: 180,
+    position: 'relative',
+  },
+  imagePlaceholder: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#F3F4F6',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imagePlaceholderText: {
+    fontSize: 64,
+  },
+  categoryBadge: {
+    position: 'absolute',
+    top: 12,
+    left: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
+  categoryBadgeText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  cardContent: {
+    padding: 16,
+  },
+  cardTitle: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 6,
+  },
+  cardLocation: {
+    fontSize: 14,
+    color: '#6B7280',
     marginBottom: 12,
   },
-  activityCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 8,
+  cardFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  activityTitle: {
-    fontSize: 15,
+  cardParticipants: {
+    fontSize: 13,
     color: '#374151',
-    fontWeight: '500',
+    fontWeight: '600',
   },
-  activityTime: {
+  cardDistance: {
     fontSize: 13,
     color: '#9CA3AF',
+    fontWeight: '500',
   },
-  recommendCard: {
+  dealCard: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
+    borderRadius: 20,
+    marginHorizontal: 20,
+    marginBottom: 12,
+    overflow: 'hidden',
+    flexDirection: 'row',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 4,
+  },
+  dealImageContainer: {
+    width: 120,
+    height: 120,
+    position: 'relative',
+  },
+  dealImagePlaceholder: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#F3F4F6',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dealImageText: {
+    fontSize: 48,
+  },
+  dealBadge: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    backgroundColor: '#DC2626',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  dealBadgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  dealContent: {
+    flex: 1,
     padding: 16,
-    marginBottom: 8,
-    borderLeftWidth: 4,
-    borderLeftColor: '#2563EB',
+    justifyContent: 'space-between',
   },
-  recommendTitle: {
+  dealTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
     color: '#111827',
-    marginBottom: 4,
+    marginBottom: 8,
   },
-  recommendInfo: {
-    fontSize: 14,
-    color: '#6B7280',
+  dealPriceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 10,
+  },
+  dealDiscount: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#DC2626',
+  },
+  dealPrice: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#111827',
+  },
+  dealOriginal: {
+    fontSize: 13,
+    color: '#9CA3AF',
+    textDecorationLine: 'line-through',
+  },
+  dealProgress: {
+    height: 6,
+    backgroundColor: '#F3F4F6',
+    borderRadius: 3,
+    overflow: 'hidden',
+    marginBottom: 8,
+  },
+  dealProgressBar: {
+    height: '100%',
+    backgroundColor: '#DC2626',
+    borderRadius: 3,
+  },
+  dealFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  dealParticipants: {
+    fontSize: 12,
+    color: '#374151',
+    fontWeight: '600',
+  },
+  dealTime: {
+    fontSize: 12,
+    color: '#DC2626',
+    fontWeight: '600',
   },
 });
 
