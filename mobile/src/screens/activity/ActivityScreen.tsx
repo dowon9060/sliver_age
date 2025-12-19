@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { colors, spacing, borderRadius, typography, shadows } from '../../styles/theme';
 
 interface Activity {
   id: number;
@@ -18,6 +20,8 @@ interface Activity {
 }
 
 export default function ActivityScreen() {
+  const [selectedFilter, setSelectedFilter] = useState<'all' | 'meeting' | 'community' | 'groupbuy' | 'hobby'>('all');
+
   const sampleActivities: Activity[] = [
     {
       id: 1,
@@ -90,70 +94,165 @@ export default function ActivityScreen() {
     }
   };
 
+  const filteredActivities = selectedFilter === 'all' 
+    ? sampleActivities 
+    : sampleActivities.filter(activity => activity.type === selectedFilter);
+
+  const filters = [
+    { key: 'all', label: '전체' },
+    { key: 'meeting', label: '모임' },
+    { key: 'community', label: '커뮤니티' },
+    { key: 'groupbuy', label: '공동구매' },
+    { key: 'hobby', label: '취미' },
+  ];
+
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#2563EB" />
+      <StatusBar barStyle="light-content" backgroundColor={colors.primary.main} />
 
-      <View style={styles.header}>
+      <LinearGradient
+        colors={colors.primary.gradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.header}
+      >
         <Text style={styles.headerTitle}>활동내역</Text>
-        <Text style={styles.headerSubtitle}>내 활동을 확인하세요</Text>
+        <Text style={styles.headerSubtitle}>나의 건강한 활동을 확인하세요 💪</Text>
+        
+        <View style={styles.statsContainer}>
+          <View style={styles.statItem}>
+            <Text style={styles.statValue}>{sampleActivities.length}</Text>
+            <Text style={styles.statLabel}>총 활동</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statItem}>
+            <Text style={styles.statValue}>
+              {sampleActivities.filter(a => a.status === 'completed').length}
+            </Text>
+            <Text style={styles.statLabel}>완료</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statItem}>
+            <Text style={styles.statValue}>
+              {sampleActivities.filter(a => a.status === 'upcoming').length}
+            </Text>
+            <Text style={styles.statLabel}>예정</Text>
+          </View>
+        </View>
+      </LinearGradient>
+
+      <View style={styles.filterContainer}>
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filterContent}
+        >
+          {filters.map((filter) => (
+            <TouchableOpacity
+              key={filter.key}
+              style={[
+                styles.filterChip,
+                selectedFilter === filter.key && styles.filterChipActive,
+              ]}
+              onPress={() => setSelectedFilter(filter.key as any)}
+            >
+              <Text
+                style={[
+                  styles.filterChipText,
+                  selectedFilter === filter.key && styles.filterChipTextActive,
+                ]}
+              >
+                {filter.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
 
       <ScrollView 
         style={styles.content}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.contentContainer}
       >
-        {sampleActivities.map((activity) => (
-          <TouchableOpacity
-            key={activity.id}
-            style={styles.activityCard}
-          >
-            <View style={styles.activityHeader}>
+        {filteredActivities.map((activity, index) => (
+          <View key={activity.id} style={styles.timelineItem}>
+            {/* Timeline line */}
+            <View style={styles.timelineLineContainer}>
               <View
                 style={[
-                  styles.typeBadge,
-                  { backgroundColor: getTypeColor(activity.type) + '20' },
+                  styles.timelineDot,
+                  { backgroundColor: getTypeColor(activity.type) },
                 ]}
-              >
-                <Text
-                  style={[
-                    styles.typeText,
-                    { color: getTypeColor(activity.type) },
-                  ]}
-                >
-                  {getTypeText(activity.type)}
-                </Text>
-              </View>
-              <View
-                style={[
-                  styles.statusBadge,
-                  activity.status === 'upcoming'
-                    ? styles.statusUpcoming
-                    : activity.status === 'completed'
-                    ? styles.statusCompleted
-                    : styles.statusCancelled,
-                ]}
-              >
-                <Text style={styles.statusText}>
-                  {getStatusText(activity.status)}
-                </Text>
-              </View>
+              />
+              {index < filteredActivities.length - 1 && (
+                <View style={styles.timelineLine} />
+              )}
             </View>
 
-            <Text style={styles.activityTitle}>{activity.title}</Text>
-            <Text style={styles.activityDescription}>
-              {activity.description}
-            </Text>
-            <Text style={styles.activityDate}>
-              {activity.date.toLocaleDateString('ko-KR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </Text>
-          </TouchableOpacity>
+            {/* Activity card */}
+            <TouchableOpacity style={styles.activityCard}>
+              <View style={styles.activityHeader}>
+                <View
+                  style={[
+                    styles.typeBadge,
+                    { backgroundColor: getTypeColor(activity.type) + '15' },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.typeText,
+                      { color: getTypeColor(activity.type) },
+                    ]}
+                  >
+                    {getTypeText(activity.type)}
+                  </Text>
+                </View>
+                <View
+                  style={[
+                    styles.statusBadge,
+                    activity.status === 'upcoming'
+                      ? styles.statusUpcoming
+                      : activity.status === 'completed'
+                      ? styles.statusCompleted
+                      : styles.statusCancelled,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.statusText,
+                      activity.status === 'upcoming'
+                        ? styles.statusUpcomingText
+                        : activity.status === 'completed'
+                        ? styles.statusCompletedText
+                        : styles.statusCancelledText,
+                    ]}
+                  >
+                    {getStatusText(activity.status)}
+                  </Text>
+                </View>
+              </View>
+
+              <Text style={styles.activityTitle}>{activity.title}</Text>
+              <Text style={styles.activityDescription}>
+                {activity.description}
+              </Text>
+              
+              <View style={styles.activityFooter}>
+                <Text style={styles.activityDate}>
+                  📅 {activity.date.toLocaleDateString('ko-KR', {
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </Text>
+                <Text style={styles.activityTime}>
+                  🕐 {activity.date.toLocaleTimeString('ko-KR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         ))}
       </ScrollView>
     </View>
@@ -163,87 +262,192 @@ export default function ActivityScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: colors.background.secondary,
   },
   header: {
-    backgroundColor: '#2563EB',
     paddingTop: 50,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
+    paddingBottom: spacing.xxl,
+    paddingHorizontal: spacing.xl,
   },
   headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    fontSize: 28,
+    fontWeight: '800',
+    color: colors.white,
     marginBottom: 4,
   },
   headerSubtitle: {
+    fontSize: 15,
+    color: 'rgba(255, 255, 255, 0.9)',
+    marginBottom: spacing.xl,
+  },
+  statsContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: borderRadius.lg,
+    padding: spacing.lg,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  statItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  statValue: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: colors.white,
+    marginBottom: 2,
+  },
+  statLabel: {
+    fontSize: 12,
+    color: 'rgba(255, 255, 255, 0.9)',
+  },
+  statDivider: {
+    width: 1,
+    height: 30,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  filterContainer: {
+    backgroundColor: colors.white,
+    paddingVertical: spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray[100],
+  },
+  filterContent: {
+    paddingHorizontal: spacing.xl,
+    gap: spacing.sm,
+  },
+  filterChip: {
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    backgroundColor: colors.gray[100],
+    borderRadius: borderRadius.round,
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  filterChipActive: {
+    backgroundColor: colors.primary.main + '15',
+    borderColor: colors.primary.main,
+  },
+  filterChipText: {
     fontSize: 14,
-    color: '#DBEAFE',
+    fontWeight: '600',
+    color: colors.gray[600],
+  },
+  filterChipTextActive: {
+    color: colors.primary.main,
+    fontWeight: '700',
   },
   content: {
     flex: 1,
-    padding: 16,
+  },
+  contentContainer: {
+    padding: spacing.xl,
+  },
+  timelineItem: {
+    flexDirection: 'row',
+    marginBottom: spacing.lg,
+  },
+  timelineLineContainer: {
+    width: 40,
+    alignItems: 'center',
+    marginRight: spacing.md,
+  },
+  timelineDot: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    borderWidth: 3,
+    borderColor: colors.white,
+    ...shadows.sm,
+  },
+  timelineLine: {
+    width: 2,
+    flex: 1,
+    backgroundColor: colors.gray[200],
+    marginTop: spacing.sm,
   },
   activityCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 3,
+    flex: 1,
+    backgroundColor: colors.white,
+    borderRadius: borderRadius.lg,
+    padding: spacing.lg,
+    ...shadows.md,
   },
   activityHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
   typeBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 6,
+    borderRadius: borderRadius.sm,
   },
   typeText: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: 13,
+    fontWeight: '700',
   },
   statusBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 6,
+    borderRadius: borderRadius.sm,
   },
   statusUpcoming: {
-    backgroundColor: '#FEF3C7',
+    backgroundColor: colors.warning + '20',
   },
   statusCompleted: {
-    backgroundColor: '#D1FAE5',
+    backgroundColor: colors.success + '20',
   },
   statusCancelled: {
-    backgroundColor: '#FEE2E2',
+    backgroundColor: colors.danger + '20',
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '600',
-    color: '#374151',
+    fontWeight: '700',
+  },
+  statusUpcomingText: {
+    color: colors.warning,
+  },
+  statusCompletedText: {
+    color: colors.success,
+  },
+  statusCancelledText: {
+    color: colors.danger,
   },
   activityTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#111827',
-    marginBottom: 4,
+    fontSize: 17,
+    fontWeight: '700',
+    color: colors.gray[900],
+    marginBottom: 6,
   },
   activityDescription: {
-    fontSize: 14,
-    color: '#6B7280',
-    marginBottom: 8,
+    fontSize: 15,
+    color: colors.gray[600],
+    lineHeight: 22,
+    marginBottom: spacing.md,
+  },
+  activityFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.gray[100],
   },
   activityDate: {
     fontSize: 13,
-    color: '#9CA3AF',
+    color: colors.gray[600],
+    fontWeight: '600',
+  },
+  activityTime: {
+    fontSize: 13,
+    color: colors.gray[500],
+    fontWeight: '600',
   },
 });
+
+
+
 

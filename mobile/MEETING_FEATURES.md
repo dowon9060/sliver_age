@@ -261,3 +261,6 @@ const getMarkerColor = (meeting: Meeting) => {
 
 버그 리포트나 기능 제안은 이슈로 등록해주세요!
 
+
+
+

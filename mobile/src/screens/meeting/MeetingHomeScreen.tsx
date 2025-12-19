@@ -9,9 +9,11 @@ import {
   Dimensions,
   StatusBar,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import * as Location from 'expo-location';
 import apiClient from '../../api/client';
 import { Meeting } from '../../types';
+import { colors, spacing, borderRadius, typography, shadows } from '../../styles/theme';
 
 const { width } = Dimensions.get('window');
 
@@ -355,20 +357,27 @@ export default function MeetingHomeScreen({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#2563EB" />
+      <StatusBar barStyle="light-content" backgroundColor={colors.primary.main} />
       
       {/* 헤더 */}
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.headerTitle}>실버세대</Text>
-          <Text style={styles.headerSubtitle}>
-            {location ? '내 주변 1.5km' : '위치 확인중...'}
-          </Text>
+      <LinearGradient
+        colors={colors.primary.gradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.header}
+      >
+        <View style={styles.headerContent}>
+          <View>
+            <Text style={styles.headerTitle}>모임 찾기 🔍</Text>
+            <Text style={styles.headerSubtitle}>
+              {location ? '📍 내 주변 1.5km' : '위치 확인중...'}
+            </Text>
+          </View>
+          <TouchableOpacity style={styles.filterButton}>
+            <Text style={styles.filterIcon}>⚙️</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.filterButton}>
-          <Text style={styles.filterIcon}>설정</Text>
-        </TouchableOpacity>
-      </View>
+      </LinearGradient>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* 카테고리 메뉴 */}
@@ -438,198 +447,195 @@ export default function MeetingHomeScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: colors.background.secondary,
   },
   header: {
-    backgroundColor: '#2563EB',
     paddingTop: 50,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
+    paddingBottom: spacing.xl,
+    paddingHorizontal: spacing.xl,
+  },
+  headerContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    fontSize: 28,
+    fontWeight: '800',
+    color: colors.white,
     marginBottom: 4,
   },
   headerSubtitle: {
-    fontSize: 14,
-    color: '#DBEAFE',
+    fontSize: 15,
+    color: 'rgba(255, 255, 255, 0.9)',
   },
   filterButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   filterIcon: {
-    fontSize: 14,
-    color: '#FFFFFF',
-    fontWeight: '600',
+    fontSize: 20,
   },
   content: {
     flex: 1,
   },
   categoriesSection: {
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    backgroundColor: colors.white,
+    paddingVertical: spacing.lg,
   },
   categoriesList: {
-    paddingHorizontal: 12,
+    paddingHorizontal: spacing.md,
   },
   categoryItem: {
     alignItems: 'center',
-    marginHorizontal: 8,
+    marginHorizontal: spacing.sm,
     width: 70,
   },
   categoryIconContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#EFF6FF',
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: colors.primary.main + '15',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: colors.primary.main + '30',
   },
   categoryIcon: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#2563EB',
+    fontSize: 14,
+    fontWeight: '700',
+    color: colors.primary.main,
   },
   mapViewButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#FFFFFF',
-    marginHorizontal: 16,
-    marginVertical: 16,
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#2563EB',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    backgroundColor: colors.white,
+    marginHorizontal: spacing.lg,
+    marginVertical: spacing.lg,
+    padding: spacing.lg,
+    borderRadius: borderRadius.lg,
+    borderWidth: 2,
+    borderColor: colors.primary.main,
+    ...shadows.md,
   },
   mapViewText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#2563EB',
+    fontSize: 17,
+    fontWeight: '700',
+    color: colors.primary.main,
   },
   mapViewArrow: {
-    fontSize: 18,
-    color: '#2563EB',
+    fontSize: 20,
+    color: colors.primary.main,
     fontWeight: 'bold',
   },
   meetingsSection: {
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing.lg,
     paddingBottom: 100,
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: spacing.lg,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#111827',
+    fontSize: 22,
+    fontWeight: '800',
+    color: colors.gray[900],
   },
   sectionCount: {
-    fontSize: 14,
-    color: '#6B7280',
+    fontSize: 15,
+    color: colors.gray[600],
+    fontWeight: '600',
   },
   meetingsList: {
-    gap: 16,
+    gap: spacing.lg,
   },
   meetingCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 3,
-    marginBottom: 12,
+    backgroundColor: colors.white,
+    borderRadius: borderRadius.xl,
+    padding: spacing.lg,
+    marginBottom: spacing.md,
+    ...shadows.lg,
   },
   meetingHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: spacing.sm,
   },
   meetingTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#111827',
+    fontSize: 19,
+    fontWeight: '700',
+    color: colors.gray[900],
     flex: 1,
-    marginRight: 8,
+    marginRight: spacing.sm,
   },
   statusBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 6,
+    borderRadius: borderRadius.round,
   },
   statusOpen: {
-    backgroundColor: '#D1FAE5',
+    backgroundColor: colors.success + '20',
   },
   statusClosed: {
-    backgroundColor: '#FEE2E2',
+    backgroundColor: colors.danger + '20',
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '600',
-    color: '#059669',
+    fontWeight: '700',
+    color: colors.success,
   },
   meetingDescription: {
-    fontSize: 14,
-    color: '#6B7280',
-    marginBottom: 12,
-    lineHeight: 20,
+    fontSize: 15,
+    color: colors.gray[600],
+    marginBottom: spacing.md,
+    lineHeight: 22,
   },
   meetingInfo: {
-    gap: 8,
-    marginBottom: 12,
+    gap: spacing.sm,
+    marginBottom: spacing.md,
   },
   infoItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: spacing.sm,
   },
   infoLabel: {
-    fontSize: 13,
-    color: '#9CA3AF',
-    fontWeight: '500',
+    fontSize: 14,
+    color: colors.gray[500],
+    fontWeight: '600',
+    width: 40,
   },
   infoText: {
-    fontSize: 14,
-    color: '#374151',
+    fontSize: 15,
+    color: colors.gray[700],
     flex: 1,
+    fontWeight: '600',
   },
   meetingFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 12,
+    paddingTop: spacing.md,
     borderTopWidth: 1,
-    borderTopColor: '#F3F4F6',
+    borderTopColor: colors.gray[100],
   },
   feeText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#2563EB',
+    fontSize: 18,
+    fontWeight: '800',
+    color: colors.primary.main,
   },
   distanceText: {
     fontSize: 14,
-    color: '#6B7280',
+    color: colors.gray[600],
+    fontWeight: '600',
   },
   loadingContainer: {
     padding: 40,
@@ -637,7 +643,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: '#6B7280',
+    color: colors.gray[600],
   },
   emptyContainer: {
     padding: 40,
@@ -645,33 +651,29 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#374151',
-    marginBottom: 8,
+    fontWeight: '700',
+    color: colors.gray[700],
+    marginBottom: spacing.sm,
   },
   emptySubtext: {
-    fontSize: 14,
-    color: '#9CA3AF',
+    fontSize: 15,
+    color: colors.gray[500],
   },
   fab: {
     position: 'absolute',
-    right: 20,
-    bottom: 20,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#2563EB',
+    right: spacing.xl,
+    bottom: spacing.xl,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: colors.primary.main,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    ...shadows.lg,
   },
   fabText: {
-    fontSize: 32,
-    color: '#FFFFFF',
+    fontSize: 36,
+    color: colors.white,
     fontWeight: 'bold',
   },
 });
